@@ -1,8 +1,9 @@
 <div class="page-header">
   <h1>What The Fuck Should We Play</h1>
-  <%= form_tag("/find", :class => 'form-inline', :remote => true) do %>
-    <%= text_field_tag 'user', nil, :placeholder => 'BGG Username' %>
+  <%= form_tag("find", :id => 'wtfswp-form', :class => 'form-inline', :method => 'get', :remote => true) do %>
+    <%= text_field_tag 'username', nil, :placeholder => 'BGG Username' %>
     <%= number_field_tag 'players', nil, :placeholder => 'Players' %>
     <%= submit_tag "FUCKING GO", :class => "btn"%>
   <% end %>
+  <div id="results" />
 </div>

@@ -14,3 +14,15 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require_tree .
+$(document).ready(function(){
+	$("#wtfswp-form")
+	.bind('ajax:success', function(evt, data, status, xhr) {
+		console.log("success");
+		console.log(data)
+		$('#results').html(data);
+	})
+    .bind('ajax:error', function(evtxhr, status, error) {
+		console.log("failure");
+		$('#results').html("Shit Broke");
+	})	
+});
