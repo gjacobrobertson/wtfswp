@@ -1,18 +1,27 @@
 class PagesController < ApplicationController  
   
   def index
+    @message = params[:message].nil? ? "WHAT THE FUCK SHOULD WE PLAY" : params[:message]
+    @username = params[:username]
+    @players = params[:players] == 0 ? nil : params[:players]
+    puts @players
   end
 
   def find
     @username = params[:username]
-    @players = params[:players].to_i
-
-    response = HTTParty.get("http://boardgamegeek.com/xmlapi/collection/#{@username}?own=1")
-    data = response.parsed_response
-    games = data['items']['item']
-    valid_games = valid_games(games)
-    @game = sample(valid_games)
-    render :layout => false
+    @players = params[:players]
+    if @username == ''
+      redirect_to :action => "index", :message => "ENTER YOUR FUCKING NAME", :players => @players
+    elsif @players == ''
+      redirect_to :action => "index", :message => "HOW MANY OF YOU FUCKERS ARE THERE", :username => @username
+    else
+      @players = @players.to_i
+      response = HTTParty.get("http://boardgamegeek.com/xmlapi/collection/#{@username}?own=1")
+      data = response.parsed_response
+      games = data['items']['item']
+      valid_games = valid_games(games)
+      @game = sample(valid_games)
+    end
   end
   
   protected
