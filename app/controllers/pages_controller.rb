@@ -18,9 +18,13 @@ class PagesController < ApplicationController
       @players = @players.to_i
       response = HTTParty.get("http://boardgamegeek.com/xmlapi/collection/#{@username}?own=1")
       data = response.parsed_response
-      games = data['items']['item']
-      valid_games = valid_games(games)
-      @game = sample(valid_games)
+      if data['items']['totalitems'] == '0'
+        redirect_to :action => "index", :message => "STOP FUCKING AROUND. ENTER A REAL USERNAME", :players => @players
+      else
+        games = data['items']['item']
+        valid_games = valid_games(games)
+        @game = sample(valid_games)
+      end
     end
   end
   
