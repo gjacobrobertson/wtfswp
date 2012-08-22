@@ -1,4 +1,4 @@
-jaksdhfkjashdlkjsajhdfjkashdkfgsource 'https://rubygems.org'
+jsajhdfjkashdkfgsource 'https://rubygems.org'
 
 gem 'rails', '3.2.7'
 
