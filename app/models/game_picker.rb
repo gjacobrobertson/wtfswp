@@ -20,8 +20,13 @@ class GamePicker
   end
   
   def pick
-    response = HTTParty.get("http://boardgamegeek.com/xmlapi/collection/#{@username}?own=1")
-    data = response.parsed_response
+    data = Rails.cache.read @username
+    if !data
+      puts "WRITING RESPONSE TO #{@username}"
+      response = HTTParty.get("http://boardgamegeek.com/xmlapi/collection/#{@username}?own=1")
+      data = response.parsed_response
+      Rails.cache.write(@username, data, :expires_in => 14400)
+    end
     if data['items']['totalitems'] == '0'
       return nil
     else

@@ -38,6 +38,7 @@ GEM
       execjs
     coffee-script-source (1.3.3)
     commonjs (0.2.6)
+    dalli (2.1.0)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -122,6 +123,7 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
+  dalli
   httparty
   jquery-rails
   rails (= 3.2.7)
