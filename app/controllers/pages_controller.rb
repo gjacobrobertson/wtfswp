@@ -6,7 +6,7 @@ class PagesController < ApplicationController
   end
 
   def find
-    @gamepicker = GamePicker.new(params[:gamepicker])
+    @gamepicker = GamePicker.new(:username => params[:username], :players => params[:players])
     if @gamepicker.valid?
       @game = @gamepicker.pick
     else

@@ -1,6 +1,6 @@
 <h1><%= welcome_message %></h1>
 <%= form_tag("find", :class => 'form-inline', :method => 'get') do %>
-    <%= text_field_tag 'gamepicker[username]', @gamepicker.username, :placeholder => 'BGG Username' %>
-    <%= number_field_tag 'gamepicker[players]', @gamepicker.players, :placeholder => 'Players' %>
+    <%= text_field_tag 'username', @gamepicker.username, :placeholder => 'BGG Username' %>
+    <%= number_field_tag 'players', @gamepicker.players, :placeholder => 'Players' %>
     <%= submit_tag "FUCKING GO", :class => "btn"%>
 <% end %>

@@ -33,7 +33,7 @@ class GamePicker
   
   protected
   def valid_games(games)
-    games.find_all{|game| (game['stats']['minplayers'].to_i <= @players) and (game['stats']['maxplayers'].to_i >= @players)}
+    games.find_all{|game| (game['stats']['minplayers'].to_i <= @players.to_i) and (game['stats']['maxplayers'].to_i >= @players.to_i)}
   end
   
   def sample(games)
