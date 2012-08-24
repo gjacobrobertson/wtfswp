@@ -39,3 +39,4 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 gem 'httparty'
+gem 'dalli'
