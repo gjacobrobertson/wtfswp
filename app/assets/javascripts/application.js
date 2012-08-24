@@ -14,3 +14,27 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require_tree .
+//= require konami.pack
+//= require rainbow
+
+$(document).ready(function() {
+	konami = new Konami()
+	konami.code = function() {
+		$('.fuck').rainbow({
+		    colors: [
+		        '#FF0000',
+		        '#f26522',
+		        '#fff200',
+		        '#00a651',
+		        '#28abe2',
+		        '#2e3192',
+		        '#6868ff'
+		    ],
+		    animate: true,
+		    animateInterval: 100,
+		    pad: false,
+		    pauseLength: 100
+		});
+	}
+	konami.load()	
+});
