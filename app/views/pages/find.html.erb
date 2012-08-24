@@ -1,2 +1,2 @@
-<h1>PLAY FUCKING <%= @game ? @game['name']['__content__'].upcase : 'NOTHING'%></h1>
+<h1>PLAY FUCKING <%= @game ? link_to(@game['name']['__content__'].upcase, "http://boardgamegeek.com/boardgame/#{@game['objectid']}") : 'NOTHING'%></h1>
 <h2><%= link_to "FUCK THAT", :action => "find", :username => @gamepicker.username, :players => @gamepicker.players %></h2>
