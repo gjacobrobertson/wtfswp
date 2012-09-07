@@ -55,6 +55,23 @@ class GamePicker
   end
   
   def score(collection, game)
+    rating_score(collection, game) * suggested_players_score(game)
+  end
+  
+  def rating_score(collection, game)
     collection.rating(game.id)
+  end
+  
+  def suggested_players_score(game)
+    case game.players_suggestion(@players.to_i)
+    when "Best"
+      2
+    when "Recommended"
+      1
+    when "Not Recommended"
+      0
+    else
+      0
+    end
   end
 end
