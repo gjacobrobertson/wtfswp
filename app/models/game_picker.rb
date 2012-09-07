@@ -20,43 +20,41 @@ class GamePicker
   end
   
   def pick
-    data = Rails.cache.read @username
-    if !data
-      puts "WRITING RESPONSE TO #{@username}"
-      response = HTTParty.get("http://boardgamegeek.com/xmlapi/collection/#{@username}?own=1")
-      data = response.parsed_response
-      Rails.cache.write(@username, data, :expires_in => 14400)
-    end
-    if data['items']['totalitems'] == '0'
+    collection = GameCollection.new(@username)
+    if collection.count.nil? or collection.count == 0
       return nil
     else
-      games = data['items']['item']
-      valid_games = valid_games(games)
-      @game = sample(valid_games)
+      @game = sample(collection)
     end
   end
   
   protected
-  def valid_games(games)
-    games.find_all{|game| (game['stats']['minplayers'].to_i <= @players.to_i) and (game['stats']['maxplayers'].to_i >= @players.to_i)}
-  end
   
-  def sample(games)
-    ratings = games.collect{|game| game['stats']['rating']['value'] != 'N/A' ? game['stats']['rating']['value'] : game['stats']['rating']['average']['value']}
-    ratings = ratings.collect{|rating| rating.to_f}
+  def sample(collection)
+    games = collection.games(:players => @players.to_i)
+    scores = games.collect do |game|
+      score(collection, game)
+    end
+    scores = scores.collect do |score|
+      score.to_f
+    end
     
     #normalize ratings
-    sum = ratings.inject(:+)
-    ratings = ratings.collect{|rating| rating/sum}
+    sum = scores.inject(:+)
+    scores = scores.collect{|score| score/sum}
     
-    #sample from games weighted by rating
+    #sample from games weighted by score
     target = rand()
     i = 0
-    thresh=ratings[i]
+    thresh=scores[i]
     while thresh < target do
       i = i+1
-      thresh= thresh + ratings[i]
+      thresh= thresh + scores[i]
     end
     games[i]
+  end
+  
+  def score(collection, game)
+    collection.rating(game.id)
   end
 end
