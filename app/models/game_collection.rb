@@ -53,7 +53,8 @@ class GameCollection
       options = { :query => { :id => ids_to_retrieve.join(',') } }
       response = self.class.get("/xmlapi2/thing", options)
       data = response.parsed_response
-      items = self.items(args)
+      items = data['items']['item']
+      items = items.class == Array ? items : [items]
       items.each do |item|
         games << Game.new(item)
         Rails.cache.write(item['id'], item, :expires_in => 14400)
