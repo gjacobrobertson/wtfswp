@@ -1,7 +1,6 @@
 class PagesController < ApplicationController  
   
   def index
-    @message = "WHAT THE <span class='fuck'>FUCK</span> SHOULD WE PLAY".html_safe
     @gamepicker = GamePicker.new()
   end
 
