@@ -21,7 +21,7 @@ class GamePicker
   
   def pick
     collection = GameCollection.new(@username)
-    if collection.count.nil? or collection.count == 0
+    if collection.count(:players => @players).nil? or collection.count(:players => @players) == 0
       return nil
     else
       @game = sample(collection)
