@@ -14,27 +14,18 @@ class GameCollection
         
     end
     @data_map = {}
-    @data['items']['item'].each do |item|
+    self.items({}).each do |item|
       @data_map[item['objectid'].to_i] = item
     end
   end
   
-  def count
-    begin
-      @data['items']['totalitems'].to_i
-    rescue NoMethodError => exception
-      0
-    end
+  def count(args = {})
+    self.items(args).count
   end
   
   def ids(args = {})
     begin
-      items = @data['items']['item']
-      if args[:players]
-        items = items.select do |item|
-          (item['stats']['minplayers'].to_i <= args[:players]) and (item['stats']['maxplayers'].to_i >= args[:players])
-        end
-      end
+      items = self.items(args)
       items.collect do |item|
         item['objectid'].to_i
       end
@@ -62,7 +53,7 @@ class GameCollection
       options = { :query => { :id => ids_to_retrieve.join(',') } }
       response = self.class.get("/xmlapi2/thing", options)
       data = response.parsed_response
-      items = data['items']['item']
+      items = self.items(args)
       items.each do |item|
         games << Game.new(item)
         Rails.cache.write(item['id'], item, :expires_in => 14400)
@@ -73,5 +64,21 @@ class GameCollection
   
   def rating(id)
     @data_map[id]['stats']['rating']['value'] == 'N/A' ? @data_map[id]['stats']['rating']['average']['value'].to_i : @data_map[id]['stats']['rating']['value'].to_i
+  end
+  
+  def items(args)
+    begin
+      items = data['items']['item']
+      items = items.nil? ? [] : items
+      items = items.class == Array ? items : [items]
+      if args[:players]
+        items = items.select do |item|
+          (item['stats']['minplayers'].to_i <= args[:players].to_i) and (item['stats']['maxplayers'].to_i >= args[:players].to_i)
+        end
+      end
+      return items
+    rescue NoMethodError
+      return []
+    end
   end
 end
