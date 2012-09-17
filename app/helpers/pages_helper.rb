@@ -1,15 +1,8 @@
 module PagesHelper
   def welcome_message
-    if @message.nil?
-      @gamepicker.errors.each do |attr,msg|
-        if attr == :username
-          return "WHO THE FUCK ARE YOU?"
-        elsif attr == :players
-          return "HOW MANY OF YOU FUCKERS ARE THERE"
-        end
-      end
-    else
-      @message
+    @gamepicker.errors.each do |attr,msg|
+      return msg
     end
+    return "WHAT THE <span class='fuck'>FUCK</span> SHOULD WE PLAY".html_safe
   end
 end
