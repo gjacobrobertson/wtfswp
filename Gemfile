@@ -40,3 +40,5 @@ gem 'jquery-rails'
 
 gem 'httparty'
 gem 'dalli'
+gem 'capistrano'
+gem 'rvm-capistrano'
