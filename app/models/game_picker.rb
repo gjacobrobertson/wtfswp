@@ -6,8 +6,9 @@ class GamePicker
 
   attr_accessor :username, :players
   
-  validates :username, :presence => true
-  validates :players, :numericality => { :only_integer => true, :greater_than => 1 }
+  validates :username, :presence => {:message => "WHO THE FUCK ARE YOU?"}
+  validates :players, :numericality => { :only_integer => true, :greater_than => 0 , :message => "HOW MANY OF YOU FUCKERS ARE THERE?" }
+  validates :players, :numericality => { :only_integer => true, :greater_than => 1, :message => "YOU SICK SAD FUCK" }
   
   def initialize(attributes = {})
     attributes.each do |name, value|
