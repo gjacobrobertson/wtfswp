@@ -14,11 +14,17 @@ class Game
   end
   
   def players_suggestion(players)
+    puts self.id
     poll = @data['poll'].find do |p|
       p['name'] == 'suggested_numplayers'
     end
-    results = poll['results'].find do |r|
+    results = poll['results']
+    results = results.class == Array ? results : [results]
+    results = results.find do |r|
       r['numplayers'] == players.to_s
+    end
+    if results.nil?
+      return 'Recommended'
     end
     result = results['result']
     suggestion = nil
