@@ -5,7 +5,7 @@ set :rvm_ruby_string, 'ruby-1.9.3-p194'
 default_run_options[:pty] = true
 
 set :user, 'deploy'
-set :domain, 'the-treasury.net'
+set :domain, 'whatthefuckshouldweplay.com'
 set :application, "wtfswp"
 set :deploy_to, "/var/www/apps/wtfswp"
 set :deploy_via, "export"
