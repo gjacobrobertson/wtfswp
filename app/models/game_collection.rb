@@ -16,7 +16,7 @@ class GameCollection
   end
 
   def count(args = {})
-    @data.xpath("//item").length
+    return self.items(args).length
   end
 
   def ids(args = {})
@@ -48,7 +48,6 @@ class GameCollection
       items = data.xpath('/items/item')
       items.each do |item|
         games << Game.new(item.to_xml)
-        puts "Caching ID: #{item.at_xpath('@id')}"
         Rails.cache.write(item.at_xpath('@id').value, item.to_xml, :expires_in => 14400)
       end
     end
@@ -56,7 +55,6 @@ class GameCollection
   end
 
   def rating(id)
-    puts id
     user_rating = @data.at_xpath("items/item[@objectid = #{id}]/stats/rating/@value").value
     average_rating = @data.at_xpath("items/item[@objectid = #{id}]/stats/rating/average/@value").value
     return user_rating == 'N/A' ? average_rating.to_i : user_rating.to_i

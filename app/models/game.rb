@@ -13,7 +13,6 @@ class Game
   end
 
   def players_suggestion(players)
-    puts self.id
     results = @data.at_xpath("/item/poll[@name='suggested_numplayers']/results[@numplayers = #{players}]")
     if results.nil?
       return 'Recommended'
