@@ -1,38 +1,30 @@
 class Game
   attr_accessor :data
   def initialize(data)
-    @data = data
+    @data = Nokogiri::XML(data)
   end
-  
+
   def id
-    @data['id'].to_i
+    return @data.at_xpath('/item/@id').value.to_i
   end
-  
+
   def title
-    name = @data['name']
-    name.class == Array ? name.find{|n| n['type'] == 'primary'}['value'] : name['value']
+    name = @data.at_xpath("/item/name[@type='primary']/@value").value
   end
-  
+
   def players_suggestion(players)
     puts self.id
-    poll = @data['poll'].find do |p|
-      p['name'] == 'suggested_numplayers'
-    end
-    results = poll['results']
-    results = results.class == Array ? results : [results]
-    results = results.find do |r|
-      r['numplayers'] == players.to_s
-    end
+    results = @data.at_xpath("/item/poll[@name='suggested_numplayers']/results[@numplayers = #{players}]")
     if results.nil?
       return 'Recommended'
     end
-    result = results['result']
+    result = results.xpath('result')
     suggestion = nil
     votes = 0
     result.each do |r|
-      if r['numvotes'].to_i > votes
-        votes = r['numvotes'].to_i
-        suggestion = r['value']
+      if r.at_xpath('@numvotes').value.to_i > votes
+        votes = r.at_xpath('@numvotes').value.to_i
+        suggestion = r.at_xpath('@value').value
       end
     end
     suggestion

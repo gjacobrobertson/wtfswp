@@ -1,43 +1,35 @@
 class GameCollection
   include HTTParty
   base_uri 'http://boardgamegeek.com'
-  
+
   attr_accessor :data
-  
+
   def initialize(username)
-    @data = Rails.cache.read username
-    if !@data
+    data = Rails.cache.read(username)
+    if !data
       options = {:query => {:username => username, :own => 1, :brief => 1, :stats => 1} }
       response = self.class.get("/xmlapi2/collection", options)
-      @data = response.parsed_response
-      Rails.cache.write(username, @data, :expires_in => 14400)
-        
+      data = response.body
+      Rails.cache.write(username, data, :expires_in => 14400)
     end
-    @data_map = {}
-    self.items({}).each do |item|
-      @data_map[item['objectid'].to_i] = item
-    end
+    @data = Nokogiri::XML(data)
   end
-  
+
   def count(args = {})
-    self.items(args).count
+    @data.xpath("//item").length
   end
-  
+
   def ids(args = {})
-    begin
-      items = self.items(args)
-      items.collect do |item|
-        item['objectid'].to_i
-      end
-    rescue NoMethodError => exception
-      nil
+    items = self.items(args)
+    return items.xpath("@objectid").collect do |node|
+      node.value.to_i
     end
   end
-  
+
   def games(args = {})
     games = []
     ids_to_retrieve = []
-    
+
     #First retrieve as many games as possible from the cache
     self.ids(args).each do |id|
       game_data = Rails.cache.read id
@@ -47,39 +39,30 @@ class GameCollection
         ids_to_retrieve << id
       end
     end
-    
+
     # Build the rest of the games from a single request to BGG
     if ids_to_retrieve.length > 0
       options = { :query => { :id => ids_to_retrieve.join(',') } }
       response = self.class.get("/xmlapi2/thing", options)
-      data = response.parsed_response
-      items = data['items']['item']
-      items = items.class == Array ? items : [items]
+      data = Nokogiri::XML(response.body)
+      items = data.xpath('/items/item')
       items.each do |item|
-        games << Game.new(item)
-        Rails.cache.write(item['id'], item, :expires_in => 14400)
+        games << Game.new(item.to_xml)
+        puts "Caching ID: #{item.at_xpath('@id')}"
+        Rails.cache.write(item.at_xpath('@id').value, item.to_xml, :expires_in => 14400)
       end
     end
     games
   end
-  
+
   def rating(id)
-    @data_map[id]['stats']['rating']['value'] == 'N/A' ? @data_map[id]['stats']['rating']['average']['value'].to_i : @data_map[id]['stats']['rating']['value'].to_i
+    puts id
+    user_rating = @data.at_xpath("items/item[@objectid = #{id}]/stats/rating/@value").value
+    average_rating = @data.at_xpath("items/item[@objectid = #{id}]/stats/rating/average/@value").value
+    return user_rating == 'N/A' ? average_rating.to_i : user_rating.to_i
   end
-  
+
   def items(args)
-    begin
-      items = data['items']['item']
-      items = items.nil? ? [] : items
-      items = items.class == Array ? items : [items]
-      if args[:players]
-        items = items.select do |item|
-          (item['stats']['minplayers'].to_i <= args[:players].to_i) and (item['stats']['maxplayers'].to_i >= args[:players].to_i)
-        end
-      end
-      return items
-    rescue NoMethodError
-      return []
-    end
+    return @data.xpath("/items/item[stats/@minplayers <= #{args[:players]} and stats/@maxplayers >= #{args[:players]}]")
   end
 end
