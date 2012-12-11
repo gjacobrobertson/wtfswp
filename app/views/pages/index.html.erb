@@ -6,8 +6,8 @@
 <div class="form hidden-phone">
     <%= form_tag("find", :class => 'form-inline', :method => 'get') do %>
         <%= text_field_tag 'username', @gamepicker.username, :placeholder => 'BGG Username', :class => 'input-medium' %>
-        <%= number_field_tag 'players', @gamepicker.players, :placeholder => 'Players', :class => 'input-small' %>
-        <%= submit_tag "FUCKING GO", :class => "btn btn-primary"%>
+        <%= number_field_tag 'players', @gamepicker.players, :placeholder => t(:players), :class => 'input-small' %>
+        <%= submit_tag t(:index_submit), :class => "btn btn-primary"%>
     <% end %>
 </div>
 <div class="form visible-phone">
@@ -21,12 +21,12 @@
         <div class="control-group">
             <%= label_tag 'players', 'Players', :class => 'control-label'%>
             <div class="controls">
-                <%= number_field_tag 'players', @gamepicker.players, :placeholder => 'Players', :class => 'input-small' %>
+                <%= number_field_tag 'players', @gamepicker.players, :placeholder => t(:players), :class => 'input-small' %>
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <%= submit_tag "FUCKING GO", :class => "btn btn-primary"%>
+                <%= submit_tag t(:index_submit), :class => "btn btn-primary"%>
             </div>
         </div>
     <% end %>

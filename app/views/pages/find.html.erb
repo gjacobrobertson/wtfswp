@@ -1,7 +1,7 @@
 <div class="message">
-    <p>PLAY FUCKING <%= @game ? link_to(@game.title.upcase, "http://boardgamegeek.com/boardgame/#{@game.id}") : 'NOTHING'%><p>
+    <p><%= t(:play_intro)%> <%= game_link(@game) %><p>
 </div>
 <div class="links">
-    <p><%= link_to "FUCK THAT", :action => "find", :username => @gamepicker.username, :players => @gamepicker.players %></p>
-    <p><%= link_to "I FUCKED UP", :action => "index"%></p>
+    <p><%= link_to t(:find_link), :action => "find", :username => @gamepicker.username, :players => @gamepicker.players %></p>
+    <p><%= link_to t(:index_link), :action => "index"%></p>
 </div>
