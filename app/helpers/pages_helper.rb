@@ -3,6 +3,16 @@ module PagesHelper
     @gamepicker.errors.each do |attr,msg|
       return msg
     end
-    return "WHAT THE <span class='fuck'>FUCK</span> SHOULD WE PLAY".html_safe
+    return t(:welcome_message).html_safe
+  end
+
+  def game_link(game)
+    game ? link_to(emphasize(game.title), "http://boardgamegeek.com/boardgame/#{game.id}") : t(:nothing)
+  end
+
+  private
+
+  def emphasize(text)
+    I18n.locale.to_s == 'en' ? text.upcase : text
   end
 end
