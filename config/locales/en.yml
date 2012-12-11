@@ -2,4 +2,27 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  welcome_message: WHAT THE <span class='fuck'>FUCK</span> SHOULD WE PLAY
+  title: WHAT THE FUCK SHOULD WE PLAY
+  index_submit: FUCKING GO
+  players: Players
+  user_error: WHO THE FUCK ARE YOU?
+  players_error: HOW MANY OF YOU FUCKERS ARE THERE?
+  one_player: YOU SICK SAD FUCK
+  play_intro: PLAY FUCKING
+  nothing: NOTHING
+  find_link: FUCK THAT
+  index_link: I FUCKED UP
+
+proper:
+  welcome_message: I say, good chaps, what the devil should we play?
+  title: What the devil should we play?
+  index_submit: Fetch!
+  players: Chaps
+  user_error: I apologize, but I must inquire as to your electronic moniker
+  players_error: And how many fellows have embarked with you on this search for board gaming activity?
+  one_players: Go play solitaire, you knave!
+  play_intro: Might I suggest a sporting round of
+  nothing: What The Devil Should We Play?
+  find_link: Bah!
+  index_link: Make haste backwards to correct former mistakes
