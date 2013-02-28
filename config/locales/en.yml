@@ -28,7 +28,7 @@ proper:
           attributes:
             players:
               players_error: And how many fellows have embarked with you on this search for board gaming activity?
-              one_players: Go play solitaire, you knave!
+              one_player: Go play solitaire, you knave!
             username:
               user_error: I apologize, but I must inquire as to your electronic moniker
   welcome_message: I say, good chaps, what the devil should we play?
