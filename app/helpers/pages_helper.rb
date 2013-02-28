@@ -1,7 +1,8 @@
 module PagesHelper
   def welcome_message
     @gamepicker.errors.each do |attr,msg|
-      return msg
+      puts msg
+      return t(msg)
     end
     return t(:welcome_message).html_safe
   end

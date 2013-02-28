@@ -6,9 +6,9 @@ class GamePicker
 
   attr_accessor :username, :players
 
-  validates :username, :presence => {:message => I18n.t(:user_error)}
-  validates :players, :numericality => { :only_integer => true, :greater_than => 0 , :message => I18n.t(:players_error)}
-  validates :players, :numericality => { :only_integer => true, :greater_than => 1, :message => I18n.t(:one_player) }
+  validates :username, :presence => {:message => :user_error}
+  validates :players, :numericality => { :only_integer => true, :greater_than => 0 , :message => :players_error}
+  validates :players, :numericality => { :only_integer => true, :greater_than => 1, :message => :one_player }
 
   def initialize(attributes = {})
     attributes.each do |name, value|
