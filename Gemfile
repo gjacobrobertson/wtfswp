@@ -32,16 +32,17 @@ gem 'jquery-rails'
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
+gem 'capistrano-rails'
+gem 'capistrano-rbenv'
+gem 'capistrano3-unicorn'
 
 # To use debugger
 # gem 'debugger'
 
 gem 'httparty'
 gem 'dalli'
-gem 'capistrano'
-gem 'rvm-capistrano'
 gem 'nokogiri'
